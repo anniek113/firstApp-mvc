@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Annie's Blog</title>
+
+</head>
+
+<body>
+    <h1>Annie's Blog - User Requests</h1>
+    <br />
+    <div>User Name:</div><input id="username" value="username" type="string" />
+    <div>Password:</div><input id="password" value="password" type="password" />
+    <br />
+    <button class="myButton" onclick="fetchSomeData()">Fetch</button>
+    <button class="myButton" onclick="postUser()">Post</button>
+    <button class="myButton" onclick="putUser()">Put</button>
+    <button class="myButton" onclick="deleteUser()">Delete</button>
+    <br />
+    <br />
+    <a href="http://localhost:3000/test">Go to Blog Home</a>
+    <div id="writetopage"></div>
+
+    <script>
+        function display(response) {
+            console.log(response);
+            document.getElementById("writetopage").innerHTML = JSON.stringify(response);
+        }
+        function fetchSomeData() {
+            fetch("http://localhost:3000/users").then(response =>
+                response.json().then(display)
+            );
+        }
+
+        async function postUser() {
+            let un = document.getElementById('username').value;
+            let pw = document.getElementById('password').value;
+
+            const response = await fetch("http://localhost:3000/user", {
+                method: "POST", //GET,POST,PUT,DELTE
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username: un, password: pw })
+            })
+        }
+
+        async function putUser() {
+            let un = document.getElementById('username').value;
+            let pw = document.getElementById('password').value;
+
+            const response = await fetch("http://localhost:3000/user?username=Anniek113", {
+                method: "PUT", //GET,POST,PUT,DELTE
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username: un, password: pw })
+            })
+        }
+
+        async function deleteUser() {
+            let un = document.getElementById('username').value;
+            let pw = document.getElementById('password').value;
+            console.log("DELETE USER")
+            const response = await fetch("http://localhost:3000/user/?username=" + un, {
+                method: "DELETE", //GET,POST,PUT,DELTE
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username: un, password: pw })
+            })
+        }
+
+    </script>
+    <style>
+        .myButton {
+            box-shadow: 3px 4px 0px 0px #899599;
+            background: linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
+            background-color: #ededed;
+            border-radius: 15px;
+            border: 1px solid #d6bcd6;
+            display: inline-block;
+            cursor: pointer;
+            color: #3a8a9e;
+            font-family: Arial;
+            font-size: 17px;
+            padding: 7px 25px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #e1e2ed;
+        }
+
+        .myButton:hover {
+            background: linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
+            background-color: #bab1ba;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
+
+        input {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+    </style>
+
+</body>
+
+</html>
